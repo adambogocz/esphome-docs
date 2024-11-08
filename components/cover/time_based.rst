@@ -33,6 +33,10 @@ of the cover can be restored at node reboot.
           - switch.turn_off: open_cover_switch
           - switch.turn_off: close_cover_switch
 
+        # Optional variables for tilt support
+        tilt_duration: 1sec
+        activation_delay: 300ms
+
 
 Configuration variables:
 ------------------------
@@ -62,6 +66,16 @@ Configuration variables:
 - **assumed_state** (*Optional*, boolean): Whether the true state of the cover is not known.
   This will make the Home Assistant frontend show buttons for both OPEN and CLOSE actions, instead
   of hiding or disabling one of them. Defaults to ``true``.
+- **tilt_duration** (*Optional*, :ref:`config-time`): For covers/blinds with adjustable tilt. By providing
+  duration of the tilt, you will see predicted tilt state and have ability to adjust just the tilt. It might
+  be necessary to provide ``activation_delay`` to get fine level of control.
+  Defaults to ``0s`` which disables this feature.
+- **activation_delay** (*Optional*, :ref:`config-time`): For covers/blinds with adjustable tilt. Some motor units
+  may have internal delays(switch debounce filter) or physically delayed reaction on the signal/relay. In that case a small tilt input (1-30%)
+  change might result in no physical movement of the cover and its tilt. If you have this problem, measure the shortest
+  duration of a singal wich results in slightest cover move or "shake" and use that measured value. This delay
+  will be used also for regular open or close command, which also increases its position precision, but it has no real value there. 
+  Defaults to ``0s`` which disables this feature.
 - All other options from :ref:`Cover <config-cover>`.
 
 
