@@ -39,6 +39,7 @@ There are several already made boards which are compatible with this component, 
           mode:
             input: true
           inverted: yes
+        zero_cross_type: RISING_EDGE
 
     light:
       - platform: monochromatic
@@ -59,7 +60,11 @@ Configuration variables:
   - ``leading``: gate pin driven high until the zero cross is detected
   - ``trailing``: gate pin driven high from zero cross until dim period, this method
     is suitable for mosfet dimmers only.
+- **zero_cross_type** (*Optional*): Set the type of zero cross signal, can be:
 
+  - ``rising edge``: (default) signal goes HIGH on each AC zero cross, including negative amplitude.
+  - ``any edge``: signal goes HIGH when AC crossed 0 to positive amplitude and turns LOW when
+    positive amplitude crosses 0 to negative.
 - **init_with_half_cycle** (*Optional*, boolean): Will send the first full half AC cycle
   Try to use this for dimmable LED lights, it might help turning on at low brightness
   levels. On Halogen lamps it might show at initial flicker. Defaults to ``false``.
@@ -71,6 +76,19 @@ might be different from other lights, also the perceived light level might not c
 to the percentage output set to the light, to try to minimize these behaviors you can
 tweak the values ``min_power`` from this output component and also ``gamma_correct`` from
 the monochromatic light.
+
+High power AC regulator
+-----------------------
+.. figure:: images/AC-220V-4000W-SCR-Thyristor.jpg
+    :align: center
+    :width: 50.0%
+
+    Thyristor Digital Regulator 4000W 220V 
+
+These eBay and AliExpress regulators can be controlled with esphome when the external control
+board is replaced with ESPHome IC. Various models have been tested and their zero crossing signal
+is triggered twice for single sine cycle, thus ``zero_cross_type`` of ``any edge`` must be used.
+
 
 See Also
 --------
